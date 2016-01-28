@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="NantUI" default="msbuild">
+  <property name="nant.settings.currentframework" value="net-2.0"/>
+  <!-- 源码路径 -->
+  <property name="Solution.Filename" value="..\NantUI.root\NantUI.sln" />
+  <property name="Solution.Configuration" value="DEBUG" />
+  <property name="Build.OutputFolder" value="..\NantUI.root\bin\Debug"/>
+
+  <property name="Solution.Filename2" value=".\ClientVSS\TestProject\test.sln" />
+  <property name="Solution.Configuration2" value="DEBUG" />
+  <property name="Build.OutputFolder2" value=".\ClientVSS\TestProject\bin\Debug"/>
+
+
+  <property name="dir.source" value="..\NantUI.root" />
+  <property name="dir.source.exe" value="${dir.source}\NantUI\bin\Debug" />
+  <property name="dir.source.lib" value="${dir.source}\NantUI\lib" />
+  <property name="file.ico.exe" value="${dir.source}\NantUI\EditModel.ico" />
+  <!-- 编译结果 -->
+  <property name="dir.release" value="..\NantUI.root" />
+  <property name="dir.bin" value="${dir.release}\NantUI\bin\Debug" />
+  <property name="file.exe.exe" value="${dir.bin}\NantUI.exe" />
+  <property name="file.lib.lib" value="${dir.bin}\*.dll" />
+  <target name="build" depends="compile" Description="build">
+  </target>
+  <target name="compile" depends="vsbuild" Description="compile">
+  </target>
+
+  <target name="vsbuild" Description="vsbuild">
+    <csc target="winexe"
+         output="${file.exe.exe}"
+         debug="Full"
+         optimize="true"
+         define="TRACE"
+         warninglevel="4"
+         rebuild="true"
+         filealign="512"
+         win32icon="${file.ico.exe}">
+      <sources>
+        <include name="${dir.source}\**\*.cs" />
+      </sources>
+      <resources>
+        <includes name="${dir.source}\**\*.resx" />
+        <includes name="*.png"/>
+        <includes name="*.bmp"/>
+        <includes name="*.jpg"/>
+      </resources>
+      <references>
+        <include name="${file.lib.lib}" />
+      </references>
+    </csc>
+  </target>
+
+  <target name="runexe" depends="msbuild" Description="runexe">
+  <exec program="${file.exe.exe}" />
+  </target>
+
+  <target name="MSB" >
+    <solution solutionfile="${Solution.Filename}" outputdir="${Build.OutputFolder}\" configuration="${Solution.Configuration}" />
+  </target>
+  <target name="t3">
+    <solution solutionfile="${Solution.Filename2}" outputdir="${Build.OutputFolder2}\" configuration="${Solution.Configuration2}" />
+  </target>
+  <target name="msbuild" Description="msbuild">
+    <!--         <call target="t1" />  -->
+    <call target="MSB" />
+    <!-- <call target="t3" /> -->
+    <!--
+          <call target="nunit" />
+          <call target="fxcop" />-->
+  </target>
+  <target name="nunit" depends="t3">
+    <nunit2>
+      <formatter type="Plain" />
+      <formatter type="Xml" usefile="true" extension=".xml" outputdir="." />
+      <test assemblyname="${Build.OutputFolder2}\test.dll" />
+    </nunit2>
+    <!-- <nunit2report out="index.htm"> -->
+    <nunit2report todir="Report">
+      <fileset>
+        <include name="test.dll-results.xml" />
+      </fileset>
+    </nunit2report>
+  </target>
+  <target name="fxcop">
+    <exec program="fxcop.bat" />
+  </target>
+</project>
