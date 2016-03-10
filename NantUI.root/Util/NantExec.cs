@@ -59,8 +59,6 @@ namespace NantUI.Util
             }
         }
 
-
-
         private void nant_OutputReceived(object sender, DataReceivedEventArgs e)
         {
             if (OutputDataReceived != null)
