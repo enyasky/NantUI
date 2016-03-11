@@ -50,7 +50,7 @@ namespace NantUI.Util
 
         public void Run(string nantFile)
         {
-            using (var nant = getNantProcess(nantFile))
+            var nant = getNantProcess(nantFile);
             {
                 nant.Start();
                 nant.BeginOutputReadLine();

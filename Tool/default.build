@@ -44,9 +44,6 @@
         <includes name="*.bmp"/>
         <includes name="*.jpg"/>
       </resources>
-      <references>
-        <include name="${file.lib.lib}" />
-      </references>
     </csc>
   </target>
 
