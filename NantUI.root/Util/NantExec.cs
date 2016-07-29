@@ -55,7 +55,7 @@ namespace NantUI.Util
                 nant.Start();
                 nant.BeginOutputReadLine();
                 nant.BeginErrorReadLine();
-                nant.WaitForExit();
+                //nant.WaitForExit();
             }
         }
 
